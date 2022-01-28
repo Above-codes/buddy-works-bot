@@ -1,12 +1,17 @@
 require('dotenv').config();
 const fs = require('fs');
 const { Client, Collection, Intents } = require('discord.js');
-const SqliteController = require('./database/sqlite-controller');
 const Listner = require('./hook-listener/listener');
 const DiscordIntegration = require('./hook-listener/discord-integration');
+const MongoController = require('./database/mongo-controller');
 
-const database = new SqliteController();
-database.create();
+const database = new MongoController();
+try {
+	database.create();
+} catch (err) {
+	console.log('Error starting the database');
+	console.log(err.message);
+}
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 
@@ -40,11 +45,4 @@ const discordIntegration = new DiscordIntegration(database, client);
 const listener = new Listner(discordIntegration);
 client.once('ready', () => {
 	listener.listen();
-});
-
-// Make sure the db closes on exit
-[`exit`, `SIGINT`, `SIGUSR1`, `SIGUSR2`, `uncaughtException`, `SIGTERM`].forEach((eventType) => {
-  process.on(eventType, async function() {
-    await database.close();
-  });
 });
