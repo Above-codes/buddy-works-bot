@@ -12,6 +12,7 @@ module.exports = class Listener {
     this.app.use(bodyParser.json());
 
     this.app.post('/hook', (req, res) => {
+      console.log(req.headers.secret_key);
       res.status(200).end();
       this.discordIntegration.processReq(req);
     });
