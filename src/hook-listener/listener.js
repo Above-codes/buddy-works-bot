@@ -1,6 +1,5 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { webhookPort } = require('../../config.json');
 
 module.exports = class Listener {
   constructor(discordIntegration) {
@@ -17,8 +16,8 @@ module.exports = class Listener {
       this.discordIntegration.processReq(req);
     });
 
-    this.app.listen(webhookPort, () => {
-      console.log(`🚀 Server running on port ${webhookPort}`)
+    this.app.listen(process.env.WEBHOOK_PORT, () => {
+      console.log(`🚀 Server running on port ${process.env.WEBHOOK_PORT}`)
     });
   }
 }

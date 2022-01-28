@@ -1,6 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageActionRow, MessageSelectMenu } = require('discord.js');
-const { webhookUrl } = require('../../config.json');
 const uuidv4 = require('uuid').v4;
 
 module.exports = {
@@ -37,7 +36,7 @@ module.exports = {
     await db.insertNewSecret(guildId, hookSecret);
 
     const dm = await interaction.user.createDM()
-    await dm.send(`Please create a webhook integration pointing at ${webhookUrl} with a secret of \`\`\`${hookSecret}\`\`\``);
+    await dm.send(`Please create a webhook integration pointing at ${process.env.WEBHOOK_URL} with a secret of \`\`\`${hookSecret}\`\`\``);
 
 		await interaction.reply({ content: 'Please see your DMs and select a channel for me to report to!', components: [row]});
 	},

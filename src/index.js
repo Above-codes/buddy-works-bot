@@ -1,8 +1,8 @@
+require('dotenv').config();
 const fs = require('fs');
 const { Client, Collection, Intents } = require('discord.js');
 const SqliteController = require('./database/sqlite-controller');
 const Listner = require('./hook-listener/listener');
-const { token } = require('../config.json');
 const DiscordIntegration = require('./hook-listener/discord-integration');
 
 const database = new SqliteController();
@@ -32,7 +32,7 @@ for (const file of eventFiles) {
 	}
 }
 
-client.login(token);
+client.login(process.env.TOKEN);
 
 // Setup app to listen to the webhooks after
 const discordIntegration = new DiscordIntegration(database, client);
